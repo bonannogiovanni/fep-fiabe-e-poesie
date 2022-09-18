@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
-// const BASE_URL = 'http://localhost:3000';
-
-const BASE_URL = "https://fep-json-server.herokuapp.com"
+const BASE_URL = environment.JSON_SERVER_BASE_URL;
 
 @Injectable({
   providedIn: 'root',
