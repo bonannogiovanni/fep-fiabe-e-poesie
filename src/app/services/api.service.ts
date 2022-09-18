@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 // const BASE_URL = 'http://localhost:3000';
 
-const BASE_URL = "https://fep-json-server.herokuapp.com/"
+const BASE_URL = "https://fep-json-server.herokuapp.com"
 
 @Injectable({
   providedIn: 'root',
