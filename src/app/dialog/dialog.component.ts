@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dialog',
@@ -19,28 +20,70 @@ export class DialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private api: ApiService,
     @Inject(MAT_DIALOG_DATA) public kidData: any,
-    private dialogRef: MatDialogRef<DialogComponent>
+    private dialogRef: MatDialogRef<DialogComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.kidForm = this.formBuilder.group({
+      _id: [''],
       nome: ['', Validators.required],
       cognome: ['', Validators.required],
-      sezione: ['', Validators.required],
-      iscrizione: ['', Validators.required],
-      dataNascita: ['', Validators.required],
-      allergie: ['', Validators.required],
+      dataNascita: [''],
+      luogoNascita: [''],
+      cf: [''],
+      indirizzo: [''],
+      sezione: [''],
+      nomePadre: [''],
+      telefonoPadre: [''],
+      cfPadre: [''],
+      emailPadre: [''],
+      nomeMadre: [''],
+      telefonoMadre: [''],
+      cfMadre: [''],
+      emailMadre: [''],
+      altriRecapiti: [''],
+      allergie: [''],
+
+      iscrizione: [0],
+      bolliFatture: [0],
+      speseVarie: [0],
+      attivita: [0],
+      rettaMensile: [0],
+      prescuola: [0],
+      altriServizi: [0],
     });
 
     if (this.kidData) {
-      this.kidForm.patchValue({
-        nome: this.kidData.nome,
-        cognome: this.kidData.cognome,
-        dataNascita: this.kidData.dataNascita,
-        sezione: this.kidData.sezione,
-        iscrizione: this.kidData.iscrizione,
-        allergie: this.kidData.allergie,
-      });
+     
+
+      this.patchForm([
+        '_id',
+        'nome',
+        'cognome',
+        'dataNascita',
+        'luogoNascita',
+        'cf',
+        'indirizzo',
+        'sezione',
+        'nomePadre',
+        'telefonoPadre',
+        'cfPadre',
+        'emailPadre',
+        'nomeMadre',
+        'telefonoMadre',
+        'cfMadre',
+        'emailMadre',
+        'altriRecapiti',
+        'allergie',
+        'iscrizione',
+        'bolliFatture',
+        'speseVarie',
+        'attivita',
+        'rettaMensile',
+        'prescuola',
+        'altriServizi',
+      ]);
 
       this.actionBtn = 'Modifica';
     }
@@ -48,35 +91,51 @@ export class DialogComponent implements OnInit {
 
   addOrUpdateKid() {
     if (!this.kidData) {
+      console.log(this.kidForm);
       if (this.kidForm.valid) {
+        console.log('valid!');
         this.api.createKid(this.kidForm.value).subscribe({
           next: (res) => {
-            alert('Bambino Creato!');
+            this.openSnackBar('Bambino Creato!');
             this.dialogRef.close('save');
             this.kidForm.reset();
           },
           error: (error) => {
             console.log(error);
-            alert('Qualcosa non ha funzionato, il bambino non è stato creato');
+            this.openSnackBar('Qualcosa non ha funzionato, il bambino non è stato creato');
           },
         });
       }
-    }
-    else{
+    } else {
       if (this.kidForm.valid) {
-        this.api.updateKid(this.kidForm.value, this.kidData.id).subscribe({
+        this.api.updateKid(this.kidForm.value, this.kidData._id).subscribe({
           next: (res) => {
-            alert('Bambino Modificato!');
+            this.openSnackBar('Bambino Modificato!');
             this.dialogRef.close('update');
             this.kidForm.reset();
           },
           error: (error) => {
             console.log(error);
-            alert('Qualcosa non ha funzionato, il bambino non è stato modificato');
+            this.openSnackBar(
+              'Qualcosa non ha funzionato, il bambino non è stato modificato'
+            );
           },
         });
       }
-
     }
+  }
+
+  private patchForm(controls: string[]) {
+    for (let control of controls) {
+      this.kidForm.patchValue({ [control]: this.kidData[control] });
+    }
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 3000,
+    });
   }
 }

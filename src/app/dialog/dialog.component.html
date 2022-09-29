@@ -1,47 +1,231 @@
-<h1 mat-dialog-title>Dati Bambino</h1>
+<!-- <h1 mat-dialog-title>Dettaglio Bambino</h1> -->
 <div mat-dialog-content>
-  <form [formGroup]="kidForm">
-    <mat-form-field appearance="outline">
-      <mat-label>Nome</mat-label>
-      <input matInput placeholder="Nome" formControlName="nome" />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Cognome</mat-label>
-      <input matInput placeholder="Cognome" formControlName="cognome" />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Sezione</mat-label>
-      <mat-select placeholder="Sezione" formControlName="sezione">
-        <mat-option value="N">N</mat-option>
-        <mat-option value="P">P</mat-option>
-        <mat-option value="I">I</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Data di Nascita</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="dataNascita" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Iscrizione</mat-label>
-      <input
-        matInput
-        type="number"
-        placeholder="Iscrizione"
-        formControlName="iscrizione"
-      />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Allergie e Intolleranze</mat-label>
-      <textarea matInput formControlName="allergie"></textarea>
-    </mat-form-field>
+  <form [formGroup]="kidForm" autocomplete="off">
+    <input type="hidden" id="_id" formControlName="_id" />
+    <mat-card>
+      <mat-card-title>Dati Bambino</mat-card-title>
+      <mat-card-subtitle>&nbsp;</mat-card-subtitle>
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field appearance="outline" fxFlex="15">
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="Nome" formControlName="nome" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="15">
+          <mat-label>Cognome</mat-label>
+          <input matInput placeholder="Cognome" formControlName="cognome" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="10">
+          <mat-label>Data di Nascita</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dataNascita"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="15">
+          <mat-label>Luogo di Nascita</mat-label>
+          <input
+            matInput
+            placeholder="Luogo di Nascita"
+            formControlName="luogoNascita"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="15">
+          <mat-label>Codice Fiscale</mat-label>
+          <input matInput placeholder="Codice Fiscale" formControlName="cf" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="fill">
+          <mat-label>Indirizzo</mat-label>
+          <input matInput placeholder="Indirizzo" formControlName="indirizzo" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="5" floatLabel="always">
+          <mat-label>Sezione</mat-label>
+          <mat-select  formControlName="sezione">
+            <mat-option value="N">N</mat-option>
+            <mat-option value="P">P</mat-option>
+            <mat-option value="I">I</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome Padre</mat-label>
+          <input
+            matInput
+            placeholder="Nome Padre"
+            formControlName="nomePadre"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Telefono Padre</mat-label>
+          <input
+            matInput
+            placeholder="Telefono Padre"
+            formControlName="telefonoPadre"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Codice Fiscale Padre</mat-label>
+          <input
+            matInput
+            placeholder="Codice Fiscale Padre"
+            formControlName="cfPadre"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email Padre</mat-label>
+          <input
+            matInput
+            placeholder="Email Padre"
+            formControlName="emailPadre"
+          />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome Madre</mat-label>
+          <input
+            matInput
+            placeholder="Nome Madre"
+            formControlName="nomeMadre"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Telefono Madre</mat-label>
+          <input
+            matInput
+            placeholder="Telefono Madre"
+            formControlName="telefonoMadre"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Codice Fiscale Madre</mat-label>
+          <input
+            matInput
+            placeholder="Codice Fiscale Madre"
+            formControlName="cfMadre"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email Madre</mat-label>
+          <input
+            matInput
+            placeholder="Email Madre"
+            formControlName="emailMadre"
+          />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field appearance="outline">
+          <mat-label>Ulteriori Recapiti</mat-label>
+          <textarea matInput formControlName="altriRecapiti"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Allergie e Intolleranze</mat-label>
+          <textarea matInput formControlName="allergie"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-card>
+    <br />
+    <mat-card id="preventivo">
+      <mat-card-header>
+        <mat-card-title>Dati Preventivo</mat-card-title>
+        <mat-card-subtitle>&nbsp;</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Iscrizione</mat-label>
+            <input
+            min="0"
+              matInput
+              type="number"
+              placeholder="0"
+              formControlName="iscrizione"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Bolli Fatture</mat-label>
+            <input
+            min="0"
+              matInput
+              type="number"
+              placeholder="0"
+              formControlName="bolliFatture"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Spese Varie</mat-label>
+            <input
+              matInput
+              min="0"
+              type="number"
+              placeholder="0"
+              formControlName="speseVarie"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Attività Didattiche</mat-label>
+            <input
+              matInput
+              min="0"
+              type="number"
+              placeholder="0"
+              formControlName="attivita"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Retta Mensile</mat-label>
+            <input
+              matInput
+              min="0"
+              type="number"
+              placeholder="0"
+              formControlName="rettaMensile"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Prescuola</mat-label>
+            <input
+              matInput
+              min="0"
+              type="number"
+              placeholder="0"
+              formControlName="prescuola"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Altri Servizi</mat-label>
+            <input
+              matInput
+              min="0"
+              type="number"
+              placeholder="0"
+              formControlName="altriServizi"
+            />
+            <span matPrefix>€&nbsp;</span>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </form>
 </div>
+
 <div mat-dialog-action [align]="'end'">
   <button mat-raised-button color="warn" mat-dialog-close>Chiudi</button>
   <button
-    style="margin-left: 8px"
+    style="margin-left: 8px;"
     mat-raised-button
     color="primary"
     (click)="addOrUpdateKid()"

@@ -18,5 +18,11 @@
       "allergie": "Polline",
       "id": 2
     }
+  ],
+  "users": [
+    {
+      "username": "pippo",
+      "password": "pippo"
+    }
   ]
 }

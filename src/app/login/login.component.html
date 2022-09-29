@@ -1,0 +1,40 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon>child_care</mat-icon>
+    <mat-card-title>Accesso FeP</mat-card-title>
+    <mat-card-subtitle>&nbsp;</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
+      <p>
+        <mat-form-field  appearance="outline">
+          <input
+            type="text"
+            matInput
+            placeholder="Username"
+            formControlName="username"
+          />
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field appearance="outline">
+          <input
+            type="password"
+            matInput
+            placeholder="Password"
+            formControlName="password"
+          />
+        </mat-form-field>
+      </p>
+
+      <p *ngIf="error" class="error">
+        user e/o password errati
+      </p>
+
+      <div class="button">
+        <button type="submit"  mat-raised-button color="primary" >Login</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
