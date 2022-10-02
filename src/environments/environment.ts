@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  JSON_SERVER_BASE_URL: "http://localhost:3000"
+  FEP_BACKEND: "http://localhost:3000"
 };
 
 /*
