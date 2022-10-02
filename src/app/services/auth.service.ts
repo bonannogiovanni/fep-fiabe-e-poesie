@@ -13,7 +13,6 @@ export class AuthService {
   constructor(private api: ApiService) {}
 
   authenticate(credentials: any) {
-    console.log(CryptoJS.MD5(credentials.password).toString());
 
     return this.api.login({
       ...credentials,
