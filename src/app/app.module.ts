@@ -27,7 +27,7 @@ import {
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
 import {
   MatPaginatorIntl,
@@ -53,6 +53,8 @@ export const MY_FORMATS: MatDateFormats = {
 
 import { registerLocaleData } from '@angular/common';
 import localeIt from '@angular/common/locales/it';
+import { JwtInterceptor } from './services/jwt.interceptor';
+import { ErrorInterceptor } from './services/error.interceptor';
 registerLocaleData(localeIt, 'it');
 
 @NgModule({
@@ -97,6 +99,12 @@ registerLocaleData(localeIt, 'it');
     // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: MatPaginatorIntl, useClass: MatPaginatorIntlIta },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

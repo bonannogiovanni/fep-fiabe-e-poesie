@@ -52,11 +52,10 @@ export class DialogComponent implements OnInit {
       rettaMensile: [0],
       prescuola: [0],
       altriServizi: [0],
+      note: '',
     });
 
     if (this.kidData) {
-     
-
       this.patchForm([
         '_id',
         'nome',
@@ -83,6 +82,7 @@ export class DialogComponent implements OnInit {
         'rettaMensile',
         'prescuola',
         'altriServizi',
+        'note',
       ]);
 
       this.actionBtn = 'Modifica';
@@ -102,7 +102,9 @@ export class DialogComponent implements OnInit {
           },
           error: (error) => {
             console.log(error);
-            this.openSnackBar('Qualcosa non ha funzionato, il bambino non è stato creato');
+            this.openSnackBar(
+              'Qualcosa non ha funzionato, il bambino non è stato creato'
+            );
           },
         });
       }

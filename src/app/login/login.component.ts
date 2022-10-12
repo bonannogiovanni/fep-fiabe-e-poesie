@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -11,34 +12,45 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   error = false;
+  returnUrl = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       username: [''],
       password: [''],
     });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   login() {
     this.authService
       .authenticate(this.loginForm.value)
-      .subscribe(({ isAuthenticated }) => {
-        if (isAuthenticated) {
-          this.authService.isAuthenticated = true;
+      .pipe(first())
+      .subscribe(
+        (data) => {
+          console.log({ data });
           this.loginForm.reset();
-          this.router.navigate(['dashboard']);
-        } else {
+          this.router.navigate([this.returnUrl]);
+        },
+        (error) => {
+          console.log({ error });
           this.error = true;
           setTimeout(() => {
             this.error = false;
           }, 5000);
         }
-      });
+      );
   }
 }
