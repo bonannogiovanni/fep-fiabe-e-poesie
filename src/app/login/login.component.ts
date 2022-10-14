@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    if (this.authService.currentUserValue) {
+    if (this.authService.currentTokenValue) {
       this.router.navigate(['/']);
     }
   }
@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         (data) => {
-          console.log({ data });
           this.loginForm.reset();
           this.router.navigate([this.returnUrl]);
         },

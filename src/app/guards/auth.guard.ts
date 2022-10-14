@@ -23,8 +23,12 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    // return true;
-    if (this.authService.currentUserValue) {
+    if (this.authService.currentTokenValue) {
+      if (this.authService.hasTokenExpired()) {
+        this.router.navigate(['/login']);
+        return false;
+      }
+
       return true;
     } else {
       this.router.navigate(['/login']);

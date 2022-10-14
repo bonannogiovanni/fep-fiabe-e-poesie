@@ -10,16 +10,16 @@ import { BehaviorSubject, map, tap } from 'rxjs';
 })
 export class AuthService {
   isAuthenticated = false;
-  private currentUserSubject: BehaviorSubject<string>;
+  private currentTokenSubject: BehaviorSubject<string>;
 
   constructor(private api: ApiService) {
-    this.currentUserSubject = new BehaviorSubject<string>(
+    this.currentTokenSubject = new BehaviorSubject<string>(
       localStorage.getItem('token') || ''
     );
   }
 
-  public get currentUserValue(): string {
-    return this.currentUserSubject.value;
+  public get currentTokenValue(): string {
+    return this.currentTokenSubject.value;
   }
 
   authenticate(credentials: any) {
@@ -40,9 +40,8 @@ export class AuthService {
           tap(({ isAuthenticated, token }) => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             if (isAuthenticated) {
-              console.log('sto per scrivere il token ' + token);
               localStorage.setItem('token', token);
-              this.currentUserSubject.next(token);
+              this.currentTokenSubject.next(token);
               //return authResult;
             }
             //return '';
@@ -51,9 +50,28 @@ export class AuthService {
     );
   }
 
+  hasTokenExpired(): boolean {
+    console.log({ ls: localStorage.getItem('token') });
+    console.log({ cuv: this.currentTokenValue });
+
+    if (this.currentTokenValue) {
+      const jwtPayload = JSON.parse(
+        window.atob(this.currentTokenValue.split('.')[1])
+      );
+      if (new Date(jwtPayload.exp * 1000) <= new Date()) {
+        this.logout();
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('token');
-    this.currentUserSubject.next('');
+    this.currentTokenSubject.next('');
   }
 }
