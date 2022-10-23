@@ -51,9 +51,7 @@ export class AuthService {
   }
 
   hasTokenExpired(): boolean {
-    console.log({ ls: localStorage.getItem('token') });
-    console.log({ cuv: this.currentTokenValue });
-
+    
     if (this.currentTokenValue) {
       const jwtPayload = JSON.parse(
         window.atob(this.currentTokenValue.split('.')[1])

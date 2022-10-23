@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { ApiService } from '../services/api.service';
@@ -11,6 +11,7 @@ import {
   ConfirmDialogModel,
 } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 function compare(
   a: number | string | Date,
@@ -25,10 +26,10 @@ function compare(
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   title = 'Fiabe E Poesie';
 
-  allKids: Array<any> = [];
+  // allKids: Array<any> = [];
 
   displayedColumns: string[] = [
     'cognome',
@@ -42,14 +43,42 @@ export class DashboardComponent implements OnInit {
   ];
   dataSource!: MatTableDataSource<any>;
 
+  filterForm!: FormGroup;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private dialog: MatDialog,
     private api: ApiService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
   ) {}
+
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource(new Array());
+    // this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = this.customFilterPredicate();
+
+    this.getAllKids();
+    this.filterForm = this.formBuilder.group({
+      surname: [''],
+      section: [''],
+    });
+    this.filterForm.valueChanges.subscribe((value) => {
+      this.dataSource.filter = JSON.stringify(this.filterForm.value);
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   createKid() {
     this.dialog
@@ -67,16 +96,11 @@ export class DashboardComponent implements OnInit {
   getAllKids() {
     this.api.getKids().subscribe({
       next: (kids) => {
-        this.allKids = kids;
-        this.dataSource = new MatTableDataSource(this.allKids);
-        this.dataSource.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
-          return data.cognome.toLowerCase().includes(filter);
-        };
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        // this.allKids = kids;
+        this.dataSource.data = kids;
+        // this.dataSource.sort = this.sort;
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.filterPredicate = this.customFilterPredicate();
       },
       error: (error) => {
         console.log(error);
@@ -131,17 +155,26 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getAllKids();
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  customFilterPredicate() {
+    const myFilterPredicate = (data: any, filter: string): boolean => {
+      let searchFields = JSON.parse(filter);
+      return (
+        (!searchFields.surname.trim() ||
+          data.cognome
+            .trim()
+            .toLowerCase()
+            .includes(searchFields.surname.trim().toLowerCase())) &&
+        (!searchFields.section ||
+          data.sezione
+            .trim()
+            .toLowerCase()
+            .includes(searchFields.section.toLowerCase()))
+      );
+    };
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
+    return myFilterPredicate;
   }
 
   sortData(sort: Sort) {
@@ -150,7 +183,8 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.allKids = this.allKids.sort((a, b) => {
+    this.dataSource.data = this.dataSource.data.sort((a, b) => {
+      // this.allKids = this.allKids.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         // case 'name':
