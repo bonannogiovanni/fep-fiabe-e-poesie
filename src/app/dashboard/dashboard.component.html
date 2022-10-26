@@ -8,23 +8,11 @@
   </button>
   <span>Fiabe e Poesie</span>
   <span class="example-spacer"></span>
-  <!-- <button
-    mat-icon-button
-    class="example-icon favorite-icon"
-    aria-label="Example icon-button with heart icon"
-  >
-    <mat-icon>favorite</mat-icon>
-  </button> -->
+
   <button mat-raised-button color="warn" (click)="createKid()">
     Nuovo Bambino
   </button>
-  <!-- <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with share icon"
-  >
-    <mat-icon>share</mat-icon>
-  </button> -->
+
 </mat-toolbar>
 <div class="container">
   <div style="margin-top: 40px">
@@ -32,14 +20,7 @@
       <div fxLayout="row" fxLayoutGap="400px">
         <mat-form-field appearance="standard">
           <mat-label>Cerca Bambino per Cognome</mat-label>
-          <!-- <input
-            matInput
-            (keyup)="applyFilter($event)"
-            placeholder=""
-            #input
-            autocomplete="off"
-            formControlName="surname"
-          /> -->
+
           <input
             matInput
             placeholder=""
@@ -77,22 +58,6 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
           <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
         </ng-container>
-
-        <!-- <ng-container matColumnDef="dataNascita">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Data di Nascita
-          </th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.dataNascita | date: 'dd/MM/yyyy' }}
-          </td>
-        </ng-container> -->
-
-        <!-- <ng-container matColumnDef="luogoNascita">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Luogo di Nascita
-          </th>
-          <td mat-cell *matCellDef="let row">{{ row.luogoNascita }}</td>
-        </ng-container> -->
 
         <ng-container matColumnDef="iscrizione">
           <th mat-header-cell *matHeaderCellDef mat-sort-header disabled>
